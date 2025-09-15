@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campanha de Indicação - Ganhe Prêmios</title>
+    <title>Campanha de Indicação - Sistema de Captura de Leads</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #4e73df;
@@ -284,6 +285,73 @@
             margin-top: 40px;
         }
         
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        
+        .bonus-system {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .bonus-levels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .bonus-item {
+            background: #f8f9fc;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .bonus-icon {
+            font-size: 30px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .bonus-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
         @media (max-width: 768px) {
             .dashboard {
                 grid-template-columns: 1fr;
@@ -298,20 +366,24 @@
                 margin-bottom: 10px;
                 text-align: center;
             }
+            
+            .share-buttons {
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="logo">Sistema de Indicação</div>
-            <div class="tagline">Capture leads, incentive indicações e acompanhe resultados</div>
+            <div class="logo"><i class="fas fa-users"></i> Sistema de Captura de Leads</div>
+            <div class="tagline">Capture, compartilhe e converta leads de forma eficiente</div>
         </header>
         
         <div class="dashboard">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-icon">👥</div>
+                    <div class="card-icon"><i class="fas fa-user-plus"></i></div>
                     <div class="card-title">Leads Capturados</div>
                 </div>
                 <div class="stat" id="total-leads">24</div>
@@ -320,7 +392,7 @@
             
             <div class="card">
                 <div class="card-header">
-                    <div class="card-icon">📊</div>
+                    <div class="card-icon"><i class="fas fa-chart-line"></i></div>
                     <div class="card-title">Taxa de Conversão</div>
                 </div>
                 <div class="stat" id="conversion-rate">42%</div>
@@ -329,7 +401,7 @@
             
             <div class="card">
                 <div class="card-header">
-                    <div class="card-icon">🎁</div>
+                    <div class="card-icon"><i class="fas fa-gift"></i></div>
                     <div class="card-title">Indicações</div>
                 </div>
                 <div class="stat" id="total-referrals">18</div>
@@ -338,25 +410,25 @@
         </div>
         
         <div class="lead-form">
-            <h2 class="form-title">Capture Novos Leads</h2>
+            <h2 class="form-title"><i class="fas fa-download"></i> Capture Novos Leads</h2>
             <form id="capture-form">
                 <div class="form-group">
-                    <label for="name">Nome Completo</label>
+                    <label for="name"><i class="fas fa-user"></i> Nome Completo</label>
                     <input type="text" id="name" placeholder="Digite o nome completo" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="email">E-mail</label>
+                    <label for="email"><i class="fas fa-envelope"></i> E-mail</label>
                     <input type="email" id="email" placeholder="Digite o e-mail" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="phone">Telefone</label>
+                    <label for="phone"><i class="fas fa-phone"></i> Telefone</label>
                     <input type="tel" id="phone" placeholder="Digite o telefone com DDD">
                 </div>
                 
                 <div class="form-group">
-                    <label for="interest">Interesse Principal</label>
+                    <label for="interest"><i class="fas fa-star"></i> Interesse Principal</label>
                     <select id="interest">
                         <option value="">Selecione uma opção</option>
                         <option value="product">Conhecer produtos</option>
@@ -366,43 +438,71 @@
                     </select>
                 </div>
                 
-                <button type="submit" class="btn">Cadastrar Lead</button>
+                <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Cadastrar Lead</button>
             </form>
         </div>
         
         <div class="referral-section">
-            <h2 class="form-title">Programa de Indicação</h2>
+            <h2 class="form-title"><i class="fas fa-share-alt"></i> Programa de Indicação</h2>
             <p>Compartilhe seu código exclusivo e ganhe recompensas para cada amigo que indicar!</p>
             
             <div class="referral-code">
                 <div class="code">INDIQUE-AMIGO-123</div>
-                <button class="btn" onclick="copyReferralCode()">Copiar Código</button>
+                <button class="btn" onclick="copyReferralCode()"><i class="fas fa-copy"></i> Copiar Código</button>
             </div>
             
             <div class="share-buttons">
                 <div class="share-btn facebook" onclick="shareOnFacebook()">
-                    <i>f</i> Facebook
+                    <i class="fab fa-facebook-f"></i> Facebook
                 </div>
                 <div class="share-btn whatsapp" onclick="shareOnWhatsApp()">
-                    <i>📱</i> WhatsApp
+                    <i class="fab fa-whatsapp"></i> WhatsApp
                 </div>
                 <div class="share-btn twitter" onclick="shareOnTwitter()">
-                    <i>🐦</i> Twitter
+                    <i class="fab fa-twitter"></i> Twitter
                 </div>
                 <div class="share-btn email" onclick="shareByEmail()">
-                    <i>✉️</i> E-mail
+                    <i class="fas fa-envelope"></i> E-mail
                 </div>
             </div>
             
             <div style="margin-top: 30px;">
-                <h3>Suas Indicações Bem-sucedidas</h3>
+                <h3><i class="fas fa-trophy"></i> Suas Indicações Bem-sucedidas</h3>
                 <div class="stat">5</div>
                 <div class="stat-desc">Pessoas que usaram seu código</div>
             </div>
         </div>
         
+        <div class="bonus-system">
+            <h2 class="form-title"><i class="fas fa-award"></i> Sistema de Bônus por Indicação</h2>
+            <p>Quanto mais você indica, mais você ganha! Confira nossos níveis de bônus:</p>
+            
+            <div class="bonus-levels">
+                <div class="bonus-item">
+                    <div class="bonus-icon"><i class="fas fa-medal"></i></div>
+                    <div class="bonus-title">Nível Bronze</div>
+                    <p>3 indicações</p>
+                    <p><strong>Prêmio:</strong> R$ 50,00</p>
+                </div>
+                
+                <div class="bonus-item">
+                    <div class="bonus-icon"><i class="fas fa-medal"></i></div>
+                    <div class="bonus-title">Nível Prata</div>
+                    <p>7 indicações</p>
+                    <p><strong>Prêmio:</strong> R$ 150,00</p>
+                </div>
+                
+                <div class="bonus-item">
+                    <div class="bonus-icon"><i class="fas fa-medal"></i></div>
+                    <div class="bonus-title">Nível Ouro</div>
+                    <p>15 indicações</p>
+                    <p><strong>Prêmio:</strong> R$ 400,00</p>
+                </div>
+            </div>
+        </div>
+        
         <div class="card">
-            <h2 class="form-title">Leads Capturados</h2>
+            <h2 class="form-title"><i class="fas fa-list"></i> Leads Capturados</h2>
             <table class="leads-table">
                 <thead>
                     <tr>
@@ -442,6 +542,16 @@
         <footer>
             <p>Sistema de Captura e Nutrição de Leads © 2023 - Todos os direitos reservados</p>
         </footer>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div class="modal" id="confirmation-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2><i class="fas fa-check-circle"></i> Lead Cadastrado com Sucesso!</h2>
+            <p>Obrigado por cadastrar um novo lead. Agora você pode compartilhar nosso programa de indicações para ganhar recompensas.</p>
+            <button class="btn" onclick="closeModal()">Continuar</button>
+        </div>
     </div>
 
     <script>
@@ -502,6 +612,11 @@
             window.location.href = url;
         }
         
+        // Fechar modal
+        function closeModal() {
+            document.getElementById('confirmation-modal').style.display = 'none';
+        }
+        
         // Adicionar novo lead
         document.getElementById('capture-form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -533,8 +648,8 @@
             // Limpar formulário
             document.getElementById('capture-form').reset();
             
-            // Mensagem de sucesso
-            alert("Lead cadastrado com sucesso!");
+            // Mostrar modal de confirmação
+            document.getElementById('confirmation-modal').style.display = 'flex';
         });
         
         // Atualizar tabela de leads
